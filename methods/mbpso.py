@@ -24,9 +24,10 @@ def generate_particle(problem: Problem) -> BinaryParticle:
 
     particle = BinaryParticle(
         aisles_items    = [0] * problem.i,
-        number_items    = 0,
         number_aisles   = 0,
         objective       = 0.0,
+        pbest_obj       = 0.0,
+        pbest_n_aisles  = 0,
         selected_aisles = [1 if random() <= 0.5 else 0 for _ in range(problem.a)],
         pbest           = [0] * problem.a,
         velocity        = []
@@ -41,10 +42,12 @@ def generate_particle(problem: Problem) -> BinaryParticle:
             for item in aisle_items:
                 particle.aisles_items[item] += aisle_items[item]
     
-    particle.number_items = problem.add_orders(particle.aisles_items)
     particle.objective = problem.objective_function(
-        particle.number_items, particle.number_aisles
+        problem.add_orders(particle.aisles_items), particle.number_aisles
     )
+
+    particle.pbest_obj      = particle.objective
+    particle.pbest_n_aisles = particle.number_aisles
 
     return particle
 
@@ -131,7 +134,6 @@ def MBPSO(
     aisles_data = problem.aisles
 
     swarm = []
-    prev_n_aisles = [0] * size
     best_obj, best_n_aisles, best_aisles = (
         generate_initial_swarm(problem, size, v_min, v_max, swarm)
     )
@@ -143,7 +145,6 @@ def MBPSO(
 
         for i in range(size):
             particle = swarm[i]
-            prev_n_aisles[i] = particle.number_aisles
 
             selected = particle.selected_aisles
             vel_list = particle.velocity
@@ -181,42 +182,43 @@ def MBPSO(
 
                 # Incremental update of available items (avoids full recomputation).
                 if selected[a] != prev_bit:
-                    aisle = aisles_data[a]
-                    items = particle.aisles_items
+                    aisle_items = aisles_data[a]
                     
                     if prev_bit:  # Aisle deselected.
                         particle.number_aisles -= 1
-                        for item in aisle:
-                            items[item] -= aisle[item]
+                        for item in aisle_items:
+                            particle.aisles_items[item] -= aisle_items[item]
                     else:         # Aisle selected.
                         particle.number_aisles += 1
-                        for item in aisle:
-                            items[item] += aisle[item]
+                        for item in aisle_items:
+                            particle.aisles_items[item] += aisle_items[item]
 
         for i in range(size):
             particle = swarm[i]
-            prev_obj = particle.objective
 
-            particle.number_items = problem.add_orders(particle.aisles_items)
-            particle.objective = (
-                problem.objective_function(particle.number_items, particle.number_aisles)
+            particle.objective = problem.objective_function(
+                problem.add_orders(particle.aisles_items), particle.number_aisles
             )
 
-            if particle.objective > prev_obj or (
-                particle.objective == prev_obj 
-                and particle.number_aisles < prev_n_aisles[i]
+            if particle.objective > particle.pbest_obj or (
+                particle.objective == particle.pbest_obj 
+                and particle.number_aisles < particle.pbest_n_aisles
             ):
-                particle.pbest = particle.selected_aisles[:]
+                particle.pbest          = particle.selected_aisles[:]
+                particle.pbest_obj      = particle.objective
+                particle.pbest_n_aisles = particle.number_aisles
             
             if particle.objective > best_obj or (
                 particle.objective == best_obj 
                 and particle.number_aisles < best_n_aisles
             ):
+                best_aisles   = particle.selected_aisles[:]
                 best_obj      = particle.objective
                 best_n_aisles = particle.number_aisles
-                best_aisles   = particle.selected_aisles[:]
         
         generation += 1
+
+    end = perf_counter()
 
     # Assembling the available items for the best overall result -> faster than copying them over from generation to generation.
     best_aisles_items = [0] * problem.i
@@ -225,8 +227,6 @@ def MBPSO(
             aisle = aisles_data[a]
             for item in aisle:
                 best_aisles_items[item] += aisle[item]
-
-    end = perf_counter()
 
     problem.result["orders"]    = problem.view_orders(best_aisles_items)
     problem.result["aisles"]    = [a for a in range(problem.a) if best_aisles[a]]
@@ -265,15 +265,17 @@ def MBPSOzt(
         v_min (float): Minimum velocity.
         v_max (float): Maximum velocity.
         r_mu (float): Probability of mutation.
-        k (float): Transfer function parameter.
+        k (float): Transfer function parameter (> 0).
     """
+
+    if k <= 0:
+        return
 
     start = perf_counter()
     
     aisles_data = problem.aisles
 
     swarm = []
-    prev_n_aisles = [0] * size
     best_obj, best_n_aisles, best_aisles = (
         generate_initial_swarm(problem, size, v_min, v_max, swarm)
     )
@@ -285,7 +287,6 @@ def MBPSOzt(
         
         for i in range(size):
             particle = swarm[i]
-            prev_n_aisles[i] = particle.number_aisles
 
             selected = particle.selected_aisles
             vel_list = particle.velocity
@@ -308,59 +309,59 @@ def MBPSOzt(
 
                 # V-shaped transfer -> stochastic bit update.
                 transfer_vel = vel
-                if vel < 0:
+                new_bit = 1
+                if vel <= 0:
                     transfer_vel = -vel
+                    new_bit = 0
 
                 transfer = 1 - exp(-k * transfer_vel)
                 
                 if random() <= transfer:
-                    if vel <= 0:
-                        selected[a] = 0
-                    else:
-                        selected[a] = 1
-
+                    selected[a] = new_bit
+                    
                 # Mutation: random bit flip with probability r_mu.
                 if random() < r_mu:
                     selected[a] ^= 1
 
                 # Incremental update of available items (avoids full recomputation).
                 if selected[a] != prev_bit:
-                    aisle = aisles_data[a]
-                    items = particle.aisles_items
+                    aisle_items = aisles_data[a]
                     
                     if prev_bit:  # Aisle deselected.
                         particle.number_aisles -= 1
-                        for item in aisle:
-                            items[item] -= aisle[item]
+                        for item in aisle_items:
+                            particle.aisles_items[item] -= aisle_items[item]
                     else:         # Aisle selected.
                         particle.number_aisles += 1
-                        for item in aisle:
-                            items[item] += aisle[item]
+                        for item in aisle_items:
+                            particle.aisles_items[item] += aisle_items[item]
 
         for i in range(size):
             particle = swarm[i]
-            prev_obj = particle.objective
 
-            particle.number_items = problem.add_orders(particle.aisles_items)
-            particle.objective = (
-                problem.objective_function(particle.number_items, particle.number_aisles)
-            )
+            particle.objective = problem.objective_function(
+                problem.add_orders(particle.aisles_items), particle.number_aisles
+            )            
 
-            if particle.objective > prev_obj or (
-                particle.objective == prev_obj 
-                and particle.number_aisles < prev_n_aisles[i]
+            if particle.objective > particle.pbest_obj or (
+                particle.objective == particle.pbest_obj 
+                and particle.number_aisles < particle.pbest_n_aisles
             ):
-                particle.pbest = particle.selected_aisles[:]
-            
+                particle.pbest          = particle.selected_aisles[:]
+                particle.pbest_obj      = particle.objective
+                particle.pbest_n_aisles = particle.number_aisles
+
             if particle.objective > best_obj or (
                 particle.objective == best_obj 
                 and particle.number_aisles < best_n_aisles
             ):
+                best_aisles   = particle.selected_aisles[:]
                 best_obj      = particle.objective
                 best_n_aisles = particle.number_aisles
-                best_aisles   = particle.selected_aisles[:]
                 
         generation += 1
+
+    end = perf_counter()
 
     # Assembling the available items for the best overall result -> faster than copying them over from generation to generation.
     best_aisles_items = [0] * problem.i
@@ -369,8 +370,6 @@ def MBPSOzt(
             aisle = aisles_data[a]
             for item in aisle:
                 best_aisles_items[item] += aisle[item]
-
-    end = perf_counter()
 
     problem.result["orders"]    = problem.view_orders(best_aisles_items)
     problem.result["aisles"]    = [a for a in range(problem.a) if best_aisles[a]]

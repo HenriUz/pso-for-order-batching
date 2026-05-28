@@ -22,12 +22,13 @@ def generate_particle(problem: Problem) -> SetParticle:
     """
 
     particle = SetParticle(
-        aisles_items  = [0] * problem.i,
-        number_items  = 0,
-        number_aisles = 0,
-        objective     = 0.0,
-        x             = {a for a in range(problem.a) if random() <= 0.5},
-        pbest         = set()
+        aisles_items   = [0] * problem.i,
+        number_aisles  = 0,
+        objective      = 0.0,
+        pbest_obj      = 0.0,
+        pbest_n_aisles = 0,
+        x              = {a for a in range(problem.a) if random() <= 0.5},
+        pbest          = set()
     )
 
     particle.pbest = particle.x.copy()
@@ -38,11 +39,14 @@ def generate_particle(problem: Problem) -> SetParticle:
         for item in aisle_items:
             particle.aisles_items[item] += aisle_items[item]
 
-    particle.number_items = problem.add_orders(particle.aisles_items)
     particle.objective = problem.objective_function(
-        particle.number_items, particle.number_aisles
+        problem.add_orders(particle.aisles_items), 
+        particle.number_aisles
     )
     
+    particle.pbest_obj      = particle.objective
+    particle.pbest_n_aisles = particle.number_aisles
+
     return particle
 
 def generate_initial_swarm(
@@ -74,7 +78,7 @@ def generate_initial_swarm(
             particle.objective == best_obj 
             and particle.number_aisles < best_n_aisles
         ):
-            best_position = particle.pbest
+            best_position = particle.x
             best_obj      = particle.objective
             best_n_aisles = particle.number_aisles
             
@@ -87,7 +91,7 @@ def scalar_multiplication(
     """
     Multiplies a velocity by a scalar value. The result is a new velocity with `floor(scalar * |velocity|)` random elements of `velocity`.
 
-    The scalar must be in [0, 1]: a value of 1 returns the full velocity, and 0 returns an empty set.
+    The scalar must be in [0, 1]: 1 returns the full velocity, and 0 returns an empty set.
 
     Args:
         scalar (float): Scaling factor in [0, 1].
@@ -197,8 +201,7 @@ def k_tournament_selection(
             for item in problem.aisles[aisle]:
                 temp_items[item] += problem.aisles[aisle][item]
             
-            n_items = problem.add_orders(temp_items)
-            obj = problem.objective_function(n_items, n_aisles)
+            obj = problem.objective_function(problem.add_orders(temp_items), n_aisles)
 
             if obj > best_obj:
                 best_aisle = aisle
@@ -270,7 +273,6 @@ def SBPSO(
     aisles_data = problem.aisles
 
     swarm         = []
-    prev_n_aisles = [0] * size
     universe      = set(range(problem.a))
 
     global_best_obj, global_best_n_aisles, G = (
@@ -310,7 +312,6 @@ def SBPSO(
 
             velocity = cognitive_velocity | social_velocity | random_additions | random_removals
 
-            prev_n_aisles[i] = particle.number_aisles
             for op, aisle in velocity:
                 aisle_items = aisles_data[aisle]
                 if op == "+":
@@ -328,18 +329,18 @@ def SBPSO(
         
         for i in range(size):
             particle = swarm[i]
-            prev_obj = particle.objective
 
-            particle.number_items = problem.add_orders(particle.aisles_items)
             particle.objective = problem.objective_function(
-                particle.number_items, particle.number_aisles
+                problem.add_orders(particle.aisles_items), particle.number_aisles
             )
 
-            if particle.objective > prev_obj or (
-                particle.objective == prev_obj 
-                and particle.number_aisles < prev_n_aisles[i]
+            if particle.objective > particle.pbest_obj or (
+                particle.objective == particle.pbest_obj 
+                and particle.number_aisles < particle.pbest_n_aisles
             ):
-                particle.pbest = particle.x.copy()
+                particle.pbest          = particle.x.copy()
+                particle.pbest_obj      = particle.objective
+                particle.pbest_n_aisles = particle.number_aisles
 
             if particle.objective > global_best_obj or (
                 particle.objective == global_best_obj 
@@ -348,6 +349,8 @@ def SBPSO(
                 G                    = particle.pbest.copy()
                 global_best_obj      = particle.objective
                 global_best_n_aisles = particle.number_aisles
+    
+    end = perf_counter()
 
     # Assembling the available items for the best overall result -> faster than copying them over from generation to generation.
     best_aisles_items = [0] * problem.i
@@ -356,8 +359,6 @@ def SBPSO(
             aisle = aisles_data[a]
             for item in aisle:
                 best_aisles_items[item] += aisle[item]
-
-    end = perf_counter()
 
     problem.result["orders"]    = problem.view_orders(best_aisles_items)
     problem.result["aisles"]    = list(G)
