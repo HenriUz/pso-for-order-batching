@@ -1,0 +1,159 @@
+Dataset: instance_0001
+sbpso      vs mbpsozt_2  -> p=                   nan, tie.
+sbpso      vs mbpsozt_05 -> p=   0.15729920705028502, tie.
+sbpso      vs mbpso      -> p=   0.15729920705028502, tie.
+mbpsozt_2  vs mbpsozt_05 -> p=   0.15729920705028502, tie.
+mbpsozt_2  vs mbpso      -> p=   0.15729920705028502, tie.
+mbpsozt_05 vs mbpso      -> p=                   1.0, tie.
+
+Dataset: instance_0002
+sbpso      vs mbpsozt_2  -> p=                   nan, tie.
+sbpso      vs mbpsozt_05 -> p=                   nan, tie.
+sbpso      vs mbpso      -> p=                   nan, tie.
+mbpsozt_2  vs mbpsozt_05 -> p=                   nan, tie.
+mbpsozt_2  vs mbpso      -> p=                   nan, tie.
+mbpsozt_05 vs mbpso      -> p=                   nan, tie.
+
+Dataset: instance_0003
+sbpso      vs mbpsozt_2  -> p= 0.0001024695961437336, sbpso.
+sbpso      vs mbpsozt_05 -> p=0.00020818021318249114, sbpso.
+sbpso      vs mbpso      -> p= 6.556970335111027e-05, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p=    0.7797038704520073, tie.
+mbpsozt_2  vs mbpso      -> p=    0.7260080645633826, tie.
+mbpsozt_05 vs mbpso      -> p=   0.35341895779640375, tie.
+
+Dataset: instance_0004
+sbpso      vs mbpsozt_2  -> p= 0.0019849209640507965, sbpso.
+sbpso      vs mbpsozt_05 -> p=  0.004385462804140365, sbpso.
+sbpso      vs mbpso      -> p=  0.007263333838382608, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p=   0.37527868588443425, tie.
+mbpsozt_2  vs mbpso      -> p=      0.84888106870699, tie.
+mbpsozt_05 vs mbpso      -> p=    0.7407976129520061, tie.
+
+Dataset: instance_0005
+sbpso      vs mbpsozt_2  -> p=   0.42795460671186447, tie.
+sbpso      vs mbpsozt_05 -> p=    0.8552717231214046, tie.
+sbpso      vs mbpso      -> p=     0.370740607380867, tie.
+mbpsozt_2  vs mbpsozt_05 -> p=   0.09366691927647336, tie.
+mbpsozt_2  vs mbpso      -> p=    0.8773995123004794, tie.
+mbpsozt_05 vs mbpso      -> p=  0.055773716812032845, tie.
+
+Dataset: instance_0006
+sbpso      vs mbpsozt_2  -> p= 0.0011540500847815318, sbpso.
+sbpso      vs mbpsozt_05 -> p= 3.893923886288373e-05, sbpso.
+sbpso      vs mbpso      -> p=0.00018239203669452182, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p= 0.0012245375453389035, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p=  0.013835388622085758, mbpsozt_2.
+mbpsozt_05 vs mbpso      -> p=   0.07790703171221249, tie.
+
+Dataset: instance_0007
+sbpso      vs mbpsozt_2  -> p= 0.0006348593484730333, sbpso.
+sbpso      vs mbpsozt_05 -> p= 6.331997573050556e-06, sbpso.
+sbpso      vs mbpso      -> p=3.7718110868167566e-05, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p=   0.14135794530394352, tie.
+mbpsozt_2  vs mbpso      -> p=    0.6434815020734983, tie.
+mbpsozt_05 vs mbpso      -> p=   0.33590460617668316, tie.
+
+Dataset: instance_0008
+sbpso      vs mbpsozt_2  -> p= 5.074322014748292e-05, mbpsozt_2.
+sbpso      vs mbpsozt_05 -> p=    0.3085508835639561, tie.
+sbpso      vs mbpso      -> p= 0.0033902335845606745, mbpso.
+mbpsozt_2  vs mbpsozt_05 -> p=  0.005262103643806972, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p=  0.060110674751815536, tie.
+mbpsozt_05 vs mbpso      -> p=   0.08219027169144101, tie.
+
+Dataset: instance_0009
+sbpso      vs mbpsozt_2  -> p= 8.009374141693115e-08, sbpso.
+sbpso      vs mbpsozt_05 -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpso      -> p= 1.862645149230957e-09, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p=1.7333066441991056e-06, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p= 1.862645149230957e-08, mbpsozt_2.
+mbpsozt_05 vs mbpso      -> p= 3.049522638320923e-05, mbpso.
+
+Dataset: instance_0010
+sbpso      vs mbpsozt_2  -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpsozt_05 -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpso      -> p= 1.862645149230957e-09, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p= 1.862645149230957e-09, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p=4.7124922275543213e-07, mbpsozt_2.
+mbpsozt_05 vs mbpso      -> p=1.6838312149047852e-06, mbpso.
+
+Dataset: instance_0011
+sbpso      vs mbpsozt_2  -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpsozt_05 -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpso      -> p= 1.862645149230957e-09, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p= 1.862645149230957e-09, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p= 6.146728992462158e-08, mbpsozt_2.
+mbpsozt_05 vs mbpso      -> p=1.6838312149047852e-06, mbpso.
+
+Dataset: instance_0012
+sbpso      vs mbpsozt_2  -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpsozt_05 -> p=1.7333066441991056e-06, sbpso.
+sbpso      vs mbpso      -> p= 1.862645149230957e-09, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p= 9.313225746154785e-09, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p=3.1478703022003174e-07, mbpsozt_2.
+mbpsozt_05 vs mbpso      -> p= 0.0011314544826745987, mbpso.
+
+Dataset: instance_0013
+sbpso      vs mbpsozt_2  -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpsozt_05 -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpso      -> p= 1.862645149230957e-09, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p= 1.862645149230957e-09, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p= 1.862645149230957e-09, mbpsozt_2.
+mbpsozt_05 vs mbpso      -> p= 9.313225746154785e-09, mbpso.
+
+Dataset: instance_0014
+sbpso      vs mbpsozt_2  -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpsozt_05 -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpso      -> p= 1.862645149230957e-09, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p= 1.862645149230957e-09, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p= 1.862645149230957e-09, mbpsozt_2.
+mbpsozt_05 vs mbpso      -> p= 1.862645149230957e-09, mbpso.
+
+Dataset: instance_0015
+sbpso      vs mbpsozt_2  -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpsozt_05 -> p= 1.862645149230957e-09, sbpso.
+sbpso      vs mbpso      -> p= 1.862645149230957e-09, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p= 1.862645149230957e-09, mbpsozt_2.
+mbpsozt_2  vs mbpso      -> p= 1.862645149230957e-09, mbpsozt_2.
+mbpsozt_05 vs mbpso      -> p=4.6566128730773926e-08, mbpso.
+
+Dataset: instance_0016
+sbpso      vs mbpsozt_2  -> p=   0.03843393023678171, sbpso.
+sbpso      vs mbpsozt_05 -> p=   0.31731050786291415, tie.
+sbpso      vs mbpso      -> p=    0.0633177868300456, tie.
+mbpsozt_2  vs mbpsozt_05 -> p=   0.08356564983357526, tie.
+mbpsozt_2  vs mbpso      -> p=    0.8292484591829462, tie.
+mbpsozt_05 vs mbpso      -> p=   0.12897804299196425, tie.
+
+Dataset: instance_0017
+sbpso      vs mbpsozt_2  -> p=   0.31731050786291415, tie.
+sbpso      vs mbpsozt_05 -> p=   0.15729920705028502, tie.
+sbpso      vs mbpso      -> p=   0.05878172135535886, tie.
+mbpsozt_2  vs mbpsozt_05 -> p=    0.5637028616507731, tie.
+mbpsozt_2  vs mbpso      -> p=   0.15729920705028516, tie.
+mbpsozt_05 vs mbpso      -> p=   0.25683925795785656, tie.
+
+Dataset: instance_0018
+sbpso      vs mbpsozt_2  -> p=  0.005255770657996361, mbpsozt_2.
+sbpso      vs mbpsozt_05 -> p=   0.04628252141634792, mbpsozt_05.
+sbpso      vs mbpso      -> p=  0.004066786325120292, mbpso.
+mbpsozt_2  vs mbpsozt_05 -> p=                   1.0, tie.
+mbpsozt_2  vs mbpso      -> p=   0.15729920705028502, tie.
+mbpsozt_05 vs mbpso      -> p=   0.31731050786291415, tie.
+
+Dataset: instance_0019
+sbpso      vs mbpsozt_2  -> p=   0.31731050786291415, tie.
+sbpso      vs mbpsozt_05 -> p=   0.10247043485974937, tie.
+sbpso      vs mbpso      -> p=   0.03389485352468927, sbpso.
+mbpsozt_2  vs mbpsozt_05 -> p=   0.25683925795785656, tie.
+mbpsozt_2  vs mbpso      -> p=    0.0955807045456294, tie.
+mbpsozt_05 vs mbpso      -> p=    0.6077660314078545, tie.
+
+Dataset: instance_0020
+sbpso      vs mbpsozt_2  -> p=                   nan, tie.
+sbpso      vs mbpsozt_05 -> p=                   nan, tie.
+sbpso      vs mbpso      -> p=                   nan, tie.
+mbpsozt_2  vs mbpsozt_05 -> p=                   nan, tie.
+mbpsozt_2  vs mbpso      -> p=                   nan, tie.
+mbpsozt_05 vs mbpso      -> p=                   nan, tie.

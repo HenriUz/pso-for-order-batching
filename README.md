@@ -42,13 +42,77 @@ The 2025 SBPO challenge dataset consists of 20 instances. These instances vary i
 The parameters used are all hard-coded in the `main.py` file.
 
 ## Repository structure
-At the root level, there is a file named `main.py`, which provides a simpler interface for running the selected method with all the parameters used in the article, based on the specified seed. The dataset must be located in the `datasets` directory, and the result will be saved in the `results` directory in the format required by the challenge.
+The project is organized into three main directories: `dataset`, `src`, and `experiments`.
 
-In the `process` directory, there is a file named `dataset.py` that reads the specified dataset and loads the data it contains. All algorithms receive an instance of the class contained within it, as the results are saved directly to the `result` attribute.
+The `dataset` directory contains the instances used in this work.
 
-The `methods` directory contains the code for the algorithms; the binary algorithms are in the `mbpso.py` file, and the set-based algorithm is in `sbpso.py`. The `utils.py` file contains code used in all the algorithms.
+The `src` directory contains the implementation of the algorithms and all the methods developed. The `main.py` file is the entry point for executing the methods and takes the following parameters:
+- the path to the instance;
+- the path to the output file (in the format required by the SBPO 2025 challenge);
+- the method identifier;
+- the numerical seed.
 
-Finally, the `results` directory contains the results obtained from the methods. The `wilcoxon.txt` file contains the Wilcoxon test results for all variants across the 30 runs, using 0.05 as the significance level. The `.csv` files are organized into: dataset, minimum value found, maximum value found, mean of values, standard deviation, gap, and average time. In the case of MBPSOzt, there is an indicator of the value of `k` used in front of the "_", with 05 representing 0.5.
+The `methods` directory contains the implemented metaheuristics, while the `process` directory contains the code responsible for reading and modeling the instances into the format used by the methods.
 
-> [!note]
-> The `tests.py` file is used to perform the 30 runs and the Wilcoxon test. The `checker.py` file in the `utils` directory contains the evaluation code provided by Mercado Livre; it is used by `tests.py` to verify that the returned solutions are consistent. The `execution` directory contains the 30 solutions for each method in each instance, for performing the statistical test.
+The `experiments` directory contains the scripts responsible for running the benchmarks and statistical tests. The `benchmark.py` file takes as parameters the method identifier and a `.txt` file containing the seeds (one per line). The script then executes the specified method for all instances and seeds, saving:
+- the aggregated results in a `.csv` file in the `benchmarks` directory;
+- the individual results of each execution in the `raw_results` directory, which are later used in the statistical tests.
+
+The `checker.py` file corresponds to the validator provided by the SBPO 2025 challenge. It is used by `benchmark.py` to verify that the generated solutions are valid. If an invalid solution is found, the execution is terminated.
+
+Finally, the `wilcoxon.py` file reads the data stored in `raw_results` and performs the Wilcoxon statistical test for each instance, saving the results to the `wilcoxon.txt` file, which will be saved in the specified path.
+
+Note that the scripts in the `experiments` directory are interdependent and, for this reason, use hardcoded paths, unlike the `src` directory, where paths are provided via parameters. Additionally, some method variations, such as different values of `k` in MBPSOzt, do not yet have automatic support for customizing the names of output files, requiring them to be renamed manually after execution.
+
+## Execution
+The project supports two types of execution:
+1. Algorithm execution, which performs a single run of the selected method using the specified parameters;
+2. Experiment execution, which performs multiple runs of a method using a set of seeds and stores the results obtained.
+
+Before executing any component of the project, clone the repository:
+
+```bash
+git clone https://github.com/HenriUz/pso-for-order-batching.git
+cd pso-for-order-batching
+```
+
+And if you use the mise:
+
+```bash
+mise trust
+mise install
+```
+
+### Algorithms
+
+```bash
+cd src
+python main.py <instance_path> <result_path> <method_number> <seed_number>
+```
+
+Available methods:
+- `0`: MBPSO;
+- `1`: MBPSOzt;
+- `2`: SBPSO
+
+### Experiments
+The benchmark runs a method for all seeds provided in a file, saving the results of each execution. 
+
+```bash
+cd experiments
+python benchmark.py <method_number> <seed_path>
+```
+
+### Statistical Test
+The Wilcoxon test should be run after the benchmarks are complete, as it uses the results generated by them.
+
+If the dependencies are not yet installed:
+```bash
+pip install -r experiments/requirements.txt
+```
+
+To run the test:
+```bash
+cd experiments
+python wilcoxon.py <result_path>
+```
