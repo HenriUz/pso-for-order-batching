@@ -11,9 +11,9 @@ def main(instance_path: str, result_path: str, method: int, seed_number: int) ->
     problem = Problem(instance_path)
 
     if method == 0:
-        MBPSO(problem, 50, 600, 0.9, 0.4, 2, 2, -6, 6, 0.02)
+        MBPSO(problem, 50, 600, 0.9, 0.4, 2, 2, 6, -6, 0.02)
     elif method == 1:
-        MBPSOzt(problem, 50, 600, 0.9, 0.4, 2, 2, -6, 6, 0.02, 0.5)
+        MBPSOzt(problem, 50, 600, 0.9, 0.4, 2, 2, 6, -6, 0.02, 0.5)
     elif method == 2:
         SBPSO(problem, 50, 600, 0.9297, 0.2266, 1.3086, 2.1526, 7)
     else:
