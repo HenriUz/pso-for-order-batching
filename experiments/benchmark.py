@@ -107,7 +107,10 @@ if __name__ == "__main__":
         max_obj = max(objectives)
         mean_obj = statistics.mean(objectives)
         stdev_obj = statistics.stdev(objectives)
-        gap = 100 * (best_obj - mean_obj) / best_obj
+
+        gap = round(100 * (best_obj - max_obj) / best_obj, 2)
+        if gap == 0:
+            gap = 0.00
 
         mean_time = statistics.mean(times)
 
